@@ -1,0 +1,883 @@
+============================================================
+TASK 1: BASIC NETWORK SCANNING WITH NMAP
+============================================================
+
+Target:
+192.168.56.101
+
+Target Environment:
+Metasploitable VM (local lab)
+
+Scanner:
+Kali Linux
+
+Purpose:
+Basic network reconnaissance and service identification
+of an intentionally vulnerable local Metasploitable VM.
+
+Ethical Use:
+The scan was performed only against a locally controlled
+Metasploitable virtual machine in an isolated lab environment.
+No external or unauthorized systems were scanned.
+
+
+============================================================
+1. BASIC NMAP SCAN
+============================================================
+
+Command:
+
+nmap 192.168.56.101
+
+
+Output:
+
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-09-07 02:31 +0530
+Nmap scan report for 192.168.56.101
+Host is up (0.0083s latency).
+Not shown: 977 filtered tcp ports (no-response)
+
+PORT     STATE SERVICE
+21/tcp   open  ftp
+22/tcp   open  ssh
+23/tcp   open  telnet
+25/tcp   open  smtp
+53/tcp   open  domain
+80/tcp   open  http
+111/tcp  open  rpcbind
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+512/tcp  open  exec
+513/tcp  open  login
+514/tcp  open  shell
+1099/tcp open  rmiregistry
+1524/tcp open  ingreslock
+2049/tcp open  nfs
+2121/tcp open  ccproxy-ftp
+3306/tcp open  mysql
+5432/tcp open  postgresql
+5900/tcp open  vnc
+6000/tcp open  X11
+6667/tcp open  irc
+8009/tcp open  ajp13
+8180/tcp open  unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 5.50 seconds
+
+
+============================================================
+2. SERVICE VERSION DETECTION
+============================================================
+
+Command:
+
+nmap -sV 192.168.56.101
+
+
+Output:
+
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-09-07 02:34 +0530
+Nmap scan report for 192.168.56.101
+Host is up (0.012s latency).
+Not shown: 977 filtered tcp ports (no-response)
+
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         vsftpd 2.3.4
+22/tcp   open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+23/tcp   open  telnet      Linux telnetd
+25/tcp   open  smtp        Postfix smtpd
+53/tcp   open  domain      ISC BIND 9.4.2
+80/tcp   open  http        Apache httpd 2.2.8 ((Ubuntu) DAV/2)
+111/tcp  open  rpcbind     2 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+512/tcp  open  exec        netkit-rsh rexecd
+513/tcp  open  login       OpenBSD or Solaris rlogind
+514/tcp  open  shell       Netkit rshd
+1099/tcp open  java-rmi    GNU Classpath grmiregistry
+1524/tcp open  bindshell   Metasploitable root shell
+2049/tcp open  nfs         2-4 (RPC #100003)
+2121/tcp open  ftp         ProFTPD 1.3.1
+3306/tcp open  mysql       MySQL 5.0.51a-3ubuntu5
+5432/tcp open  postgresql  PostgreSQL 8.3.0 - 8.3.7
+5900/tcp open  vnc         VNC (protocol 3.3)
+6000/tcp open  X11         (access denied)
+6667/tcp open  irc         UnrealIRCd
+8009/tcp open  ajp13       Apache Jserv (Protocol v1.3)
+8180/tcp open  http        Apache Tomcat/Coyote JSP engine 1.1
+
+Service Info:
+Hosts: metasploitable.localdomain, irc.Metasploitable.LAN
+OSs: Unix, Linux
+CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed.
+Please report any incorrect results at https://nmap.org/submit/.
+
+Nmap done: 1 IP address (1 host up) scanned in 17.94 seconds
+
+
+============================================================
+3. OS DETECTION
+============================================================
+
+Command:
+
+sudo nmap -O 192.168.56.101
+
+
+Output:
+
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-09-07 02:37 +0530
+Nmap scan report for 192.168.56.101
+Host is up (0.0034s latency).
+Not shown: 977 filtered tcp ports (no-response)
+
+PORT     STATE SERVICE
+21/tcp   open  ftp
+22/tcp   open  ssh
+23/tcp   open  telnet
+25/tcp   open  smtp
+53/tcp   open  domain
+80/tcp   open  http
+111/tcp  open  rpcbind
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+512/tcp  open  exec
+513/tcp  open  login
+514/tcp  open  shell
+1099/tcp open  rmiregistry
+1524/tcp open  ingreslock
+2049/tcp open  nfs
+2121/tcp open  ccproxy-ftp
+3306/tcp open  mysql
+5432/tcp open  postgresql
+5900/tcp open  vnc
+6000/tcp open  X11
+6667/tcp open  irc
+8009/tcp open  ajp13
+8180/tcp open  unknown
+
+Warning:
+OSScan results may be unreliable because we could not find at
+least 1 open and 1 closed port.
+
+Device type:
+bridge|VoIP adapter|general purpose
+
+Running (JUST GUESSING):
+Oracle Virtualbox (98%),
+Slirp (98%),
+AT&T embedded (95%),
+QEMU (94%)
+
+OS CPE:
+cpe:/o:oracle:virtualbox
+cpe:/a:danny_gasparovski:slirp
+cpe:/a:qemu:qemu
+
+Aggressive OS guesses:
+Oracle Virtualbox Slirp NAT bridge (98%),
+AT&T BGW210 voice gateway (95%),
+QEMU user mode network gateway (94%)
+
+No exact OS matches for host (test conditions non-ideal).
+
+OS detection performed.
+Please report any incorrect results at https://nmap.org/submit/.
+
+Nmap done: 1 IP address (1 host up) scanned in 11.77 seconds
+
+
+============================================================
+4. OPEN PORT / SERVICE SUMMARY
+============================================================
+
+The basic Nmap scan identified 23 open TCP ports.
+
+Port     Protocol    Service
+------------------------------------------------------------
+21       TCP         FTP
+22       TCP         SSH
+23       TCP         Telnet
+25       TCP         SMTP
+53       TCP         DNS
+80       TCP         HTTP
+111      TCP         RPCbind
+139      TCP         NetBIOS Session Service
+445      TCP         Microsoft-DS / SMB
+512      TCP         rexec
+513      TCP         rlogin
+514      TCP         rsh
+1099     TCP         Java RMI Registry
+1524     TCP         Metasploitable bindshell
+2049     TCP         NFS
+2121     TCP         FTP
+3306     TCP         MySQL
+5432     TCP         PostgreSQL
+5900     TCP         VNC
+6000     TCP         X11
+6667     TCP         IRC
+8009     TCP         AJP13
+8180     TCP         HTTP / Apache Tomcat
+
+
+============================================================
+5. SERVICE VERSION SUMMARY
+============================================================
+
+Port     Service             Version
+------------------------------------------------------------
+21       FTP                 vsftpd 2.3.4
+22       SSH                 OpenSSH 4.7p1 Debian 8ubuntu1
+23       Telnet              Linux telnetd
+25       SMTP                Postfix smtpd
+53       DNS                 ISC BIND 9.4.2
+80       HTTP                Apache httpd 2.2.8 (Ubuntu) DAV/2
+111      RPCbind             2 (RPC #100000)
+139      NetBIOS             Samba smbd 3.X - 4.X
+445      SMB                 Samba smbd 3.X - 4.X
+512      rexec               netkit-rsh rexecd
+513      rlogin               OpenBSD or Solaris rlogind
+514      rsh                 Netkit rshd
+1099     Java RMI            GNU Classpath grmiregistry
+1524     Bindshell           Metasploitable root shell
+2049     NFS                 NFS 2-4 (RPC #100003)
+2121     FTP                 ProFTPD 1.3.1
+3306     MySQL               MySQL 5.0.51a-3ubuntu5
+5432     PostgreSQL          PostgreSQL 8.3.0 - 8.3.7
+5900     VNC                 VNC protocol 3.3
+6000     X11                 Access denied
+6667     IRC                 UnrealIRCd
+8009     AJP13               Apache Jserv Protocol v1.3
+8180     HTTP                Apache Tomcat/Coyote JSP engine 1.1
+
+
+============================================================
+6. SECURITY OBSERVATIONS
+============================================================
+
+1. FTP - Port 21/tcp
+------------------------------------------------------------
+
+Detected Service:
+vsftpd 2.3.4
+
+Function:
+FTP is used to transfer files between systems.
+
+Security Risk:
+Standard FTP does not encrypt usernames, passwords, or
+transferred data. Credentials and information may therefore
+be exposed if network traffic is intercepted. The detected
+software version is also very old and should be reviewed and
+updated.
+
+Recommendation:
+Disable FTP if it is not required. If file transfer is needed,
+use a secure alternative such as SFTP or appropriately
+configured FTPS.
+
+
+2. SSH - Port 22/tcp
+------------------------------------------------------------
+
+Detected Service:
+OpenSSH 4.7p1 Debian 8ubuntu1
+
+Function:
+SSH provides encrypted remote login and administration.
+
+Security Risk:
+An exposed SSH service increases the remote-access attack
+surface. Weak passwords, poorly configured authentication,
+or outdated software can increase the risk of unauthorized
+access.
+
+Recommendation:
+Use strong authentication, restrict SSH access to trusted
+networks, disable unnecessary accounts, and keep the SSH
+software updated.
+
+
+3. Telnet - Port 23/tcp
+------------------------------------------------------------
+
+Detected Service:
+Linux telnetd
+
+Function:
+Telnet provides remote terminal access.
+
+Security Risk:
+Telnet does not provide encryption for credentials or session
+traffic. Usernames, passwords, and commands may therefore be
+exposed during transmission.
+
+Recommendation:
+Disable Telnet and use SSH for secure remote administration.
+
+
+4. SMTP - Port 25/tcp
+------------------------------------------------------------
+
+Detected Service:
+Postfix smtpd
+
+Function:
+SMTP is commonly used for transferring email between mail
+servers.
+
+Security Risk:
+An improperly configured SMTP server may be abused for
+unauthorized mail relay, spam, information disclosure, or
+other attacks.
+
+Recommendation:
+Configure SMTP securely, prevent unauthorized open relay,
+restrict access where appropriate, and keep the mail server
+updated.
+
+
+5. DNS - Port 53/tcp
+------------------------------------------------------------
+
+Detected Service:
+ISC BIND 9.4.2
+
+Function:
+DNS resolves domain names to IP addresses and provides
+other DNS-related information.
+
+Security Risk:
+An improperly configured DNS server may expose internal
+network information or permit unauthorized zone transfers.
+The detected BIND version is also very old.
+
+Recommendation:
+Restrict DNS access, prevent unauthorized zone transfers,
+minimize information disclosure, and update the DNS software.
+
+
+6. HTTP - Port 80/tcp
+------------------------------------------------------------
+
+Detected Service:
+Apache httpd 2.2.8 (Ubuntu) DAV/2
+
+Function:
+HTTP is used to provide web applications and web content.
+
+Security Risk:
+HTTP does not encrypt traffic. Sensitive information sent
+over plain HTTP may therefore be intercepted. The detected
+Apache version is also very old.
+
+Recommendation:
+Use HTTPS/TLS for sensitive web communication and keep the
+web server and applications updated.
+
+
+7. RPCbind - Port 111/tcp
+------------------------------------------------------------
+
+Detected Service:
+RPCbind 2
+
+Function:
+RPCbind helps clients locate RPC services running on a
+system.
+
+Security Risk:
+An exposed RPCbind service can disclose information about
+available RPC services and increase the attack surface.
+
+Recommendation:
+Restrict RPCbind access to trusted networks and disable it
+when it is not required.
+
+
+8. NetBIOS Session Service - Port 139/tcp
+------------------------------------------------------------
+
+Detected Service:
+Samba smbd 3.X - 4.X
+
+Function:
+Port 139 is associated with NetBIOS-based network file and
+printer sharing.
+
+Security Risk:
+Exposed NetBIOS services may disclose information about
+systems, users, and shared resources. Older SMB/NetBIOS
+configurations can increase the attack surface.
+
+Recommendation:
+Restrict access to trusted networks and disable NetBIOS
+where it is unnecessary.
+
+
+9. Microsoft-DS / SMB - Port 445/tcp
+------------------------------------------------------------
+
+Detected Service:
+Samba smbd 3.X - 4.X
+
+Function:
+Port 445 is commonly used for SMB file and printer sharing.
+
+Security Risk:
+An exposed SMB service can increase the risk of unauthorized
+access and exploitation of vulnerable SMB configurations.
+
+Recommendation:
+Restrict SMB access using firewall rules, disable obsolete
+protocols such as SMBv1 where applicable, and keep the
+operating system and Samba software updated.
+
+
+10. rexec - Port 512/tcp
+------------------------------------------------------------
+
+Detected Service:
+netkit-rsh rexecd
+
+Function:
+rexec provides remote command execution.
+
+Security Risk:
+rexec is a legacy remote administration service and does not
+provide the security protections expected from modern encrypted
+remote administration.
+
+Recommendation:
+Disable rexec if it is not required and use SSH instead.
+
+
+11. rlogin - Port 513/tcp
+------------------------------------------------------------
+
+Detected Service:
+OpenBSD or Solaris rlogind
+
+Function:
+rlogin provides remote login functionality.
+
+Security Risk:
+rlogin is a legacy remote-login protocol with weak security
+compared with modern encrypted administration protocols.
+
+Recommendation:
+Disable rlogin and use SSH for remote administration.
+
+
+12. rsh - Port 514/tcp
+------------------------------------------------------------
+
+Detected Service:
+Netkit rshd
+
+Function:
+rsh provides remote shell command execution.
+
+Security Risk:
+rsh is a legacy remote shell protocol and can expose systems
+to unauthorized remote access when improperly configured.
+
+Recommendation:
+Disable rsh and use SSH instead.
+
+
+13. Java RMI Registry - Port 1099/tcp
+------------------------------------------------------------
+
+Detected Service:
+GNU Classpath grmiregistry
+
+Function:
+Java RMI allows distributed Java applications to communicate
+with remote objects.
+
+Security Risk:
+An exposed Java RMI registry increases the remote service
+attack surface. Untrusted systems should not normally have
+unrestricted access to such a service.
+
+Recommendation:
+Restrict access to trusted systems and disable the service
+when it is not required.
+
+
+14. Metasploitable Bindshell - Port 1524/tcp
+------------------------------------------------------------
+
+Detected Service:
+Metasploitable root shell
+
+Function:
+The service provides a shell with root-level privileges in
+the intentionally vulnerable Metasploitable environment.
+
+Security Risk:
+This represents a critical security risk because exposure
+of a root shell can provide complete control of the system.
+
+Recommendation:
+This service should never be exposed on a production system.
+Disable or remove it on systems where it is not intentionally
+required.
+
+Lab Note:
+This service is intentionally present because Metasploitable
+is designed as a vulnerable security-training environment.
+
+
+15. NFS - Port 2049/tcp
+------------------------------------------------------------
+
+Detected Service:
+NFS 2-4
+
+Function:
+NFS allows filesystems to be shared over a network.
+
+Security Risk:
+Improperly configured NFS exports may expose sensitive files
+or allow unauthorized users to access shared resources.
+
+Recommendation:
+Restrict NFS access to trusted hosts and carefully configure
+exports and permissions.
+
+
+16. FTP - Port 2121/tcp
+------------------------------------------------------------
+
+Detected Service:
+ProFTPD 1.3.1
+
+Function:
+FTP provides file-transfer functionality.
+
+Security Risk:
+FTP traffic is normally unencrypted. The detected ProFTPD
+version is also very old and should be reviewed and updated.
+
+Recommendation:
+Disable the service if unnecessary or use a secure file
+transfer mechanism such as SFTP or appropriately configured
+FTPS.
+
+
+17. MySQL - Port 3306/tcp
+------------------------------------------------------------
+
+Detected Service:
+MySQL 5.0.51a-3ubuntu5
+
+Function:
+MySQL provides relational database services.
+
+Security Risk:
+Direct exposure of a database service can allow unauthorized
+systems to attempt authentication or exploit weaknesses in
+the database configuration or software.
+
+Recommendation:
+Restrict database access to authorized application and
+administration hosts. Use strong authentication and keep the
+database software updated.
+
+
+18. PostgreSQL - Port 5432/tcp
+------------------------------------------------------------
+
+Detected Service:
+PostgreSQL 8.3.0 - 8.3.7
+
+Function:
+PostgreSQL provides relational database services.
+
+Security Risk:
+Network exposure increases the attack surface of the database.
+Weak authentication, excessive permissions, or outdated
+software can increase the risk of unauthorized access.
+
+Recommendation:
+Restrict PostgreSQL access to trusted hosts, use strong
+authentication, apply least privilege, and keep the database
+software updated.
+
+
+19. VNC - Port 5900/tcp
+------------------------------------------------------------
+
+Detected Service:
+VNC protocol 3.3
+
+Function:
+VNC provides remote graphical access to a computer.
+
+Security Risk:
+An exposed remote graphical-access service can allow
+unauthorized users to attempt authentication or access the
+desktop if security controls are weak.
+
+Recommendation:
+Restrict VNC access to trusted networks and protect remote
+access with strong authentication and secure tunneling where
+appropriate.
+
+
+20. X11 - Port 6000/tcp
+------------------------------------------------------------
+
+Detected Service:
+X11
+
+Function:
+X11 provides graphical display and application communication
+for Unix/Linux graphical environments.
+
+Security Risk:
+Network-exposed X11 services can increase the attack surface
+and may expose graphical session information if improperly
+secured.
+
+Recommendation:
+Disable network access to X11 where it is unnecessary and
+restrict access using appropriate security controls.
+
+
+21. IRC - Port 6667/tcp
+------------------------------------------------------------
+
+Detected Service:
+UnrealIRCd
+
+Function:
+IRC provides Internet Relay Chat communication.
+
+Security Risk:
+An exposed IRC service increases the attack surface. The
+detected service should be reviewed for unnecessary exposure
+and software updates.
+
+Recommendation:
+Disable IRC if it is not required. If required, restrict
+access and keep the IRC software updated.
+
+
+22. AJP13 - Port 8009/tcp
+------------------------------------------------------------
+
+Detected Service:
+Apache Jserv Protocol v1.3
+
+Function:
+AJP is used for communication between web servers and
+application servers such as Apache Tomcat.
+
+Security Risk:
+An unnecessarily exposed AJP connector may allow unintended
+systems to communicate directly with the application server
+and increases the attack surface.
+
+Recommendation:
+Restrict AJP access to trusted systems and disable the
+connector if it is not required.
+
+
+23. HTTP / Apache Tomcat - Port 8180/tcp
+------------------------------------------------------------
+
+Detected Service:
+Apache Tomcat/Coyote JSP engine 1.1
+
+Function:
+Port 8180 is providing an HTTP-based web service through
+Apache Tomcat.
+
+Security Risk:
+An exposed application server may provide access to web
+applications and administrative interfaces. Older software
+may also contain security weaknesses.
+
+Recommendation:
+Restrict access to trusted networks, secure administrative
+interfaces, remove unnecessary applications, and keep
+Tomcat and deployed applications updated.
+
+
+============================================================
+7. OS DETECTION ANALYSIS
+============================================================
+
+Command:
+
+sudo nmap -O 192.168.56.101
+
+
+Result:
+
+The target host was detected as up, but the OS detection
+results were unreliable.
+
+Nmap reported:
+
+"Warning: OSScan results may be unreliable because we could
+not find at least 1 open and 1 closed port"
+
+Nmap provided the following possible device types:
+
+bridge | VoIP adapter | general purpose
+
+Nmap also produced guesses including:
+
+Oracle VirtualBox Slirp NAT bridge
+AT&T BGW210 voice gateway
+QEMU user mode network gateway
+
+However, Nmap explicitly reported:
+
+"No exact OS matches for host (test conditions non-ideal)."
+
+Therefore, no specific operating system is claimed based on
+the -O scan.
+
+The service-version detection scan separately reported:
+
+OSs: Unix, Linux
+CPE: cpe:/o:linux:linux_kernel
+
+This information came from service detection and should not
+be confused with a confirmed OS fingerprint from the -O scan.
+
+
+============================================================
+8. OVERALL SECURITY FINDINGS
+============================================================
+
+The scan identified 23 open TCP ports on the Metasploitable
+lab system.
+
+The target exposes multiple network services including:
+
+- FTP
+- SSH
+- Telnet
+- SMTP
+- DNS
+- HTTP
+- RPC
+- NetBIOS/SMB
+- rexec
+- rlogin
+- rsh
+- Java RMI
+- Root bindshell
+- NFS
+- MySQL
+- PostgreSQL
+- VNC
+- X11
+- IRC
+- AJP
+- Apache Tomcat
+
+Several of these services are legacy or outdated services
+and would represent a significant attack surface on a
+production system.
+
+The most significant observations include:
+
+1. Unencrypted legacy protocols such as FTP and Telnet.
+2. Legacy remote administration services such as rexec,
+   rlogin, and rsh.
+3. Network-exposed database services.
+4. Network-exposed SMB/NetBIOS services.
+5. Network-exposed remote graphical services such as VNC
+   and X11.
+6. Multiple older server software versions.
+7. A Metasploitable root shell exposed on port 1524.
+8. Multiple web/application services exposed simultaneously.
+
+
+============================================================
+9. KEY SECURITY RECOMMENDATIONS
+============================================================
+
+1. Disable unnecessary network services.
+
+2. Replace insecure legacy protocols such as Telnet, rexec,
+   rlogin, and rsh with secure alternatives such as SSH.
+
+3. Avoid exposing FTP where possible and use SFTP or secure
+   FTPS configurations.
+
+4. Restrict database services such as MySQL and PostgreSQL
+   to authorized hosts.
+
+5. Restrict SMB/NetBIOS access using firewall rules.
+
+6. Restrict RPCbind and NFS services to trusted systems.
+
+7. Protect remote graphical services such as VNC and X11.
+
+8. Secure web services using HTTPS/TLS where sensitive
+   information is transmitted.
+
+9. Keep operating systems, web servers, databases, and other
+   network services properly updated.
+
+10. Remove or disable intentionally exposed privileged services
+    such as the Metasploitable root shell outside a controlled
+    security-training environment.
+
+11. Apply firewall rules based on the principle of least
+    privilege.
+
+12. Regularly scan systems to identify newly exposed services
+    and changes in the attack surface.
+
+
+============================================================
+10. CONCLUSION
+============================================================
+
+Nmap was successfully used to perform network discovery,
+service identification, and OS detection against the local
+Metasploitable VM at 192.168.56.101.
+
+The basic scan identified 23 open TCP ports. Service-version
+detection provided additional information about the software
+and services running on those ports.
+
+The OS detection scan was inconclusive because Nmap reported
+that the test conditions were non-ideal and no exact OS match
+was identified.
+
+The scan demonstrates how network scanning can be used to
+identify exposed services and evaluate potential security
+risks in an authorized security-testing environment.
+
+The findings also demonstrate the importance of minimizing
+unnecessary network exposure, disabling insecure legacy
+services, applying firewall restrictions, and maintaining
+software updates.
+
+This assessment was performed only against an intentionally
+vulnerable Metasploitable VM in a controlled local lab.
+
+GitHub structure :- 
+  OIBSIP/
+│
+└── SecurityAnalyst-Beginner-Task1-BasicNetworkScanning/
+    │
+    ├── README.md
+    ├── nmap_scan_results.txt
+    │
+    └── screenshots/
+        ├── basic-scan.png
+        ├── service-version-scan.png
+        └── os-detection-scan.png
